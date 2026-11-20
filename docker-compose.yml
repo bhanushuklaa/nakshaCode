@@ -1,0 +1,87 @@
+
+# Settings shared by both model services (llama.cpp).
+x-llm-common: &llm-common
+  restart: unless-stopped
+  ports:
+    - "127.0.0.1:${LLM_PORT:-8081}:8080"   # reachable from this machine only
+  environment:
+    LLAMA_CACHE: /models                   # downloaded GGUF files live in the volume
+    HF_TOKEN: ${HF_TOKEN:-}
+  volumes:
+    - llm-models:/models
+  networks: [internal]
+
+services:
+  api:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATA_DIR: /data
+    volumes:
+      - flowlens-data:/data
+    networks: [internal]
+
+  web:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on: [api]
+    networks: [internal]
+
+  # GPU + CPU hybrid: attention on the GPU, MoE experts partly in system RAM.
+  llm-gpu:
+    <<: *llm-common
+    profiles: [gpu]
+    image: ghcr.io/ggml-org/llama.cpp:${LLAMA_IMAGE_TAG:-server-cuda}
+    command: >-
+      --hf-repo ${LLM_GGUF_REPO:-unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M}
+      --alias flowlens-llm
+      --host 0.0.0.0
+      --port 8080
+      --ctx-size ${LLM_CTX_SIZE:-32768}
+      --parallel ${LLM_PARALLEL:-2}
+      --jinja
+      --api-key ${LLM_API_KEY:-not-needed}
+      --n-gpu-layers 99
+      --n-cpu-moe ${LLM_CPU_MOE:-30}
+      --flash-attn on
+      --cache-type-k q8_0
+      --cache-type-v q8_0
+    deploy:
+      resources:
+        reservations:
+          devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+
+  # CPU only: for machines without an NVIDIA GPU.
+  llm-cpu:
+    <<: *llm-common
+    profiles: [cpu]
+    image: ghcr.io/ggml-org/llama.cpp:server
+    command: >-
+      --hf-repo ${LLM_GGUF_REPO:-unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M}
+      --alias flowlens-llm
+      --host 0.0.0.0
+      --port 8080
+      --ctx-size ${LLM_CTX_SIZE:-32768}
+      --parallel ${LLM_PARALLEL:-2}
+      --jinja
+      --api-key ${LLM_API_KEY:-not-needed}
+
+  cloudflared:
+    profiles: [tunnel]
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on: [web]
+    networks: [internal]
+
+volumes:
+  flowlens-data:
+  llm-models:
+
+networks:
+  internal:

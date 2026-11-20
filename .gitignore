@@ -1,0 +1,86 @@
+# =============================================================
+# CodeNaksha .gitignore
+# =============================================================
+
+# ---------- Secrets and local config (NEVER commit) ----------
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+secrets/
+credentials*.json
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Virtual environments (any name, including backend/workflow/)
+.venv/
+venv/
+env/
+backend/workflow/
+training/.venv*/
+
+# ---------- Backend runtime data ----------
+backend/data/
+data/
+*.sqlite
+*.sqlite3
+*.db
+uploads/
+tmp/
+
+# ---------- Node / frontend ----------
+node_modules/
+frontend/dist/
+dist/
+*.tsbuildinfo
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------- AI models and training outputs (large / private) ----------
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+models/
+training/data/
+training/logs/
+training/runs/
+training/reports/
+training/outputs/
+wandb/
+
+# ---------- Logs ----------
+*.log
+logs/
+
+# ---------- Docker local overrides ----------
+docker-compose.override.yml
+
+# ---------- OS / editors ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

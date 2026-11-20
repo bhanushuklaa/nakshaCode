@@ -1,0 +1,59 @@
+# Maps imported packages to external services.
+#
+# id:        stable identifier
+# label:     name shown in the UI
+# category:  drives the icon (database, cache, storage, payment, chat, email,
+#            http, llm, docs, devtools, crm, queue, cloud, auth, search, commerce)
+# packages:  Python modules or npm packages. A package matches when the import
+#            equals it or starts with it followed by "." or "/".
+#
+# Contributions welcome: add a service by appending an entry.
+
+- {id: postgres, label: Postgres, category: database, packages: [psycopg, psycopg2, asyncpg, pg, postgres, pg-promise]}
+- {id: mysql, label: MySQL, category: database, packages: [pymysql, mysql, mysqlclient, MySQLdb, mysql2, aiomysql]}
+- {id: sqlite, label: SQLite, category: database, packages: [sqlite3, better-sqlite3, aiosqlite]}
+- {id: sql, label: SQL database, category: database, packages: [sqlalchemy, sqlmodel, peewee, knex, sequelize, typeorm, drizzle-orm, "@prisma/client", tortoise, django.db]}
+- {id: mongodb, label: MongoDB, category: database, packages: [pymongo, motor, mongodb, mongoose, mongoengine, beanie]}
+- {id: redis, label: Redis / Valkey, category: cache, packages: [redis, ioredis, valkey, aioredis]}
+- {id: elasticsearch, label: Elasticsearch, category: search, packages: [elasticsearch, "@elastic/elasticsearch", opensearchpy]}
+- {id: supabase, label: Supabase, category: database, packages: [supabase, "@supabase/supabase-js"]}
+- {id: firebase, label: Firebase, category: database, packages: [firebase_admin, firebase-admin, firebase]}
+- {id: dynamodb, label: AWS, category: cloud, packages: [boto3, botocore, aiobotocore, aws-sdk, "@aws-sdk"]}
+- {id: gcp, label: Google Cloud, category: cloud, packages: [google.cloud, "@google-cloud"]}
+- {id: azure, label: Azure, category: cloud, packages: [azure, "@azure"]}
+- {id: s3, label: S3 storage, category: storage, packages: [minio, s3fs]}
+- {id: stripe, label: Stripe, category: payment, packages: [stripe]}
+- {id: paypal, label: PayPal, category: payment, packages: [paypalrestsdk, "@paypal"]}
+- {id: razorpay, label: Razorpay, category: payment, packages: [razorpay]}
+- {id: shopify, label: Shopify, category: commerce, packages: [shopify, shopifyapi, "@shopify"]}
+- {id: slack, label: Slack, category: chat, packages: [slack_sdk, slack_bolt, slack, "@slack/web-api", "@slack/bolt"]}
+- {id: discord, label: Discord, category: chat, packages: [discord, discord.js, nextcord]}
+- {id: telegram, label: Telegram, category: chat, packages: [telegram, aiogram, telebot, node-telegram-bot-api, telegraf]}
+- {id: twilio, label: Twilio, category: chat, packages: [twilio]}
+- {id: whatsapp, label: WhatsApp, category: chat, packages: [whatsapp-web.js, pywhatkit]}
+- {id: sendgrid, label: SendGrid, category: email, packages: [sendgrid, "@sendgrid/mail"]}
+- {id: email, label: Email (SMTP), category: email, packages: [smtplib, nodemailer, yagmail, aiosmtplib, resend, postmark, mailgun]}
+- {id: http, label: HTTP request, category: http, packages: [requests, httpx, aiohttp, urllib.request, urllib3, axios, node-fetch, got, ky, superagent, undici]}
+- {id: openai, label: OpenAI, category: llm, packages: [openai]}
+- {id: anthropic, label: Claude, category: llm, packages: [anthropic, "@anthropic-ai/sdk", claude_agent_sdk, "@anthropic-ai/claude-agent-sdk"]}
+- {id: gemini, label: Gemini, category: llm, packages: [google.generativeai, google.genai, "@google/generative-ai", "@google/genai"]}
+- {id: ollama, label: Ollama, category: llm, packages: [ollama]}
+- {id: langchain, label: LangChain, category: llm, packages: [langchain, langchain_core, langchain_community, langchain_openai, langgraph, "@langchain"]}
+- {id: llamaindex, label: LlamaIndex, category: llm, packages: [llama_index, llamaindex]}
+- {id: huggingface, label: Hugging Face, category: llm, packages: [transformers, huggingface_hub, "@huggingface"]}
+- {id: notion, label: Notion, category: docs, packages: [notion_client, "@notionhq/client"]}
+- {id: gsheets, label: Google Sheets, category: docs, packages: [gspread, googleapiclient, pygsheets, google-spreadsheet]}
+- {id: airtable, label: Airtable, category: docs, packages: [pyairtable, airtable]}
+- {id: github, label: GitHub, category: devtools, packages: [github, githubkit, "@octokit"]}
+- {id: jira, label: Jira, category: devtools, packages: [jira, atlassian, jira-client]}
+- {id: zendesk, label: Zendesk, category: crm, packages: [zenpy, node-zendesk]}
+- {id: hubspot, label: HubSpot, category: crm, packages: [hubspot, "@hubspot/api-client"]}
+- {id: salesforce, label: Salesforce, category: crm, packages: [simple_salesforce, jsforce]}
+- {id: kafka, label: Kafka, category: queue, packages: [kafka, confluent_kafka, aiokafka, kafkajs]}
+- {id: rabbitmq, label: RabbitMQ, category: queue, packages: [pika, aio_pika, amqplib, kombu]}
+- {id: celery, label: Celery, category: queue, packages: [celery]}
+- {id: bull, label: BullMQ, category: queue, packages: [bull, bullmq]}
+- {id: auth, label: Auth, category: auth, packages: [jwt, jose, passlib, authlib, jsonwebtoken, passport, bcrypt, next-auth, "@auth"]}
+- {id: vectordb, label: Vector database, category: search, packages: [qdrant_client, pinecone, chromadb, weaviate, pymilvus, faiss, lancedb, "@qdrant/js-client-rest", "@pinecone-database/pinecone", chromadb-client]}
+- {id: mlmodel, label: ML model, category: ml, packages: [ultralytics, torch, torchvision, tensorflow, keras, onnxruntime, sklearn, xgboost, lightgbm, "@tensorflow/tfjs", onnxruntime-node]}
+- {id: vision, label: Image processing, category: ml, packages: [cv2, PIL, skimage, albumentations, sharp, jimp]}
