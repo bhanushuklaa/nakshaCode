@@ -1,18 +1,21 @@
-"""QLoRA fine-tuning of a small model for nakshaCode with Unsloth (Option B).
+"""QLoRA fine-tuning of a small model for FlowLens with Unsloth (Option B).
 
+Default base: Qwen3-4B-Instruct-2507 (Apache 2.0). It fits in about 12 GB of
+VRAM for training and runs fully on the GPU afterwards.
 
   # 1. free the GPU: stop the model server while training
   docker compose stop llm-gpu
 
   # 2. train (about 6-9 GB VRAM with the defaults)
   python finetune_unsloth.py --train data/final/train.jsonl --eval data/final/eval.jsonl \
-      --out runs/nakshacode-4b
+      --out runs/flowlens-4b
 
   # 3. outputs
-  runs/nakshacode-4b/lora/        LoRA adapter (small, for further training)
-  runs/nakshacode-4b/gguf/        merged model as GGUF (q4_k_m) for llama.cpp
+  runs/flowlens-4b/lora/        LoRA adapter (small, for further training)
+  runs/flowlens-4b/gguf/        merged model as GGUF (q4_k_m) for llama.cpp
 
 Install (see training/README.md): a fresh venv with `pip install unsloth`
+(for RTX 50-series follow Unsloth's Blackwell guide, or use the unsloth/unsloth Docker image).
 """
 
 import argparse
