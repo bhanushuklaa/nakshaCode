@@ -1,4 +1,4 @@
-"""Convert Mermaid flowcharts into FlowLens training examples (prompt -> flowchart graph).
+"""Convert Mermaid flowcharts into CodeNaksha training examples (prompt -> flowchart graph).
 
 Supports the common flowchart syntax:
 

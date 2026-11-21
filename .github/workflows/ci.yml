@@ -38,5 +38,5 @@ jobs:
     needs: [backend, frontend]
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t flowlens-api ./backend
-      - run: docker build -t flowlens-web ./frontend
+      - run: docker build -t CodeNaksha-api ./backend
+      - run: docker build -t CodeNaksha-web ./frontend

@@ -1,19 +1,19 @@
-# Training a FlowLens model (Option B: small model, fine-tuned locally)
+# Training a CodeNaksha model (Option B: small model, fine-tuned locally)
 
-This folder turns outside datasets and your own FlowLens usage into training
-data in **FlowLens's exact schema**, fine-tunes **Qwen3-4B-Instruct-2507**
+This folder turns outside datasets and your own CodeNaksha usage into training
+data in **CodeNaksha's exact schema**, fine-tunes **Qwen3-4B-Instruct-2507**
 (Apache 2.0) with QLoRA on a 12 GB GPU such as an RTX 5070, and measures the
 result.
 
 ```
  n8n workflows ──► convert_n8n.py ─────┐
  Mermaid charts ─► convert_mermaid.py ─┼─► merge_split.py ─► train.jsonl ─► finetune_unsloth.py ─► GGUF
- FlowLens logs ──► export_logs.py ─────┘                  └► eval.jsonl ──► evaluate.py (before / after)
+ CodeNaksha logs ──► export_logs.py ─────┘                  └► eval.jsonl ──► evaluate.py (before / after)
 ```
 
 ## What the model learns
 
-FlowLens asks the model for three things. Each example teaches one of them,
+CodeNaksha asks the model for three things. Each example teaches one of them,
 using the same system prompt and JSON shape the backend uses
 (`backend/app/llm/prompts.py`):
 
@@ -57,7 +57,7 @@ Each run prints how many records were read, skipped and written.
 
 **What the conversion does:**
 
-| n8n | FlowLens |
+| n8n | CodeNaksha |
 |---|---|
 | `*Trigger`, `webhook` | `trigger` |
 | `if` / `filter` (output 0 / 1) | `decision` with `yes` / `no` edges |
@@ -69,7 +69,7 @@ Each run prints how many records were read, skipped and written.
 | `respondToWebhook`, `noOp`, `stopAndError` | `end` |
 | sticky notes | removed |
 
-| Mermaid | FlowLens |
+| Mermaid | CodeNaksha |
 |---|---|
 | `{...}` / `{{...}}` | `decision` |
 | first node with no incoming edge | `start` |
@@ -87,7 +87,7 @@ renumbered to `n1..nN` and every graph passes the backend validator.
 ## 2. Collect your own data (best quality)
 
 1. Set `TRAINING_LOG=true` in `.env`, then `docker compose up -d api`.
-2. Use FlowLens on code you're allowed to keep: your own repos, or MIT/Apache projects.
+2. Use CodeNaksha on code you're allowed to keep: your own repos, or MIT/Apache projects.
 3. Copy the logs out and **review them**. Fix bad labels directly in each line's `"response"`, and delete lines that are wrong:
    ```bash
    docker compose cp api:/data/training ./training/logs
@@ -115,7 +115,7 @@ python merge_split.py --inputs data/n8n.jsonl data/mermaid.jsonl data/logs.jsonl
 
 ## 4. Measure the base model first
 
-Keep the FlowLens model server running (`docker compose --profile gpu up -d llm-gpu`):
+Keep the CodeNaksha model server running (`docker compose --profile gpu up -d llm-gpu`):
 
 ```bash
 python evaluate.py --data data/final/eval.jsonl --api-key "$LLM_API_KEY" --out reports/base.json
@@ -145,7 +145,7 @@ pip install unsloth          # see Unsloth's docs for the RTX 50-series variant
 Then:
 
 ```bash
-python finetune_unsloth.py --train data/final/train.jsonl --eval data/final/eval.jsonl --out runs/flowlens-4b
+python finetune_unsloth.py --train data/final/train.jsonl --eval data/final/eval.jsonl --out runs/CodeNaksha-4b
 ```
 
 | Flag | Default | Notes |
@@ -161,21 +161,21 @@ Only the assistant answers are trained (`train_on_responses_only`), so the
 long system prompts don't waste capacity.
 
 **Outputs:**
-- `runs/flowlens-4b/lora/`: the adapter.
-- `runs/flowlens-4b/gguf/`: the merged GGUF model.
+- `runs/CodeNaksha-4b/lora/`: the adapter.
+- `runs/CodeNaksha-4b/gguf/`: the merged GGUF model.
 
-## 6. Use the fine-tuned model in FlowLens
+## 6. Use the fine-tuned model in CodeNaksha
 
 Upload the GGUF to a Hugging Face repo (private is fine):
 
 ```bash
-huggingface-cli upload <you>/flowlens-4b-GGUF runs/flowlens-4b/gguf .
+huggingface-cli upload <you>/CodeNaksha-4b-GGUF runs/CodeNaksha-4b/gguf .
 ```
 
 Then in `.env`:
 
 ```env
-LLM_GGUF_REPO=<you>/flowlens-4b-GGUF:Q4_K_M
+LLM_GGUF_REPO=<you>/CodeNaksha-4b-GGUF:Q4_K_M
 LLM_CPU_MOE=0          # a 4B dense model fits fully in VRAM
 LLM_PARALLEL=4         # small model: more requests at once
 HF_TOKEN=hf_...        # needed for a private repo
@@ -191,7 +191,7 @@ model only if `valid` and `type_match` go up. Also read 20 or so answers yoursel
 
 ## 7. Improve in a loop
 
-1. Run FlowLens with the new model and `TRAINING_LOG=true`.
+1. Run CodeNaksha with the new model and `TRAINING_LOG=true`.
 2. Fix the bad answers, then export, merge, retrain and evaluate.
 
 Every round makes the model better at the code *you* actually analyze.
@@ -202,4 +202,4 @@ Qwen3-4B-Instruct-2507 is Apache 2.0. If you publish your fine-tune:
 - Include the Apache 2.0 license.
 - Credit the base model ("fine-tuned from Qwen/Qwen3-4B-Instruct-2507").
 - List the datasets you used.
-- Give it your own name, e.g. "FlowLens-4B", without implying endorsement by the Qwen team.
+- Give it your own name, e.g. "CodeNaksha-4B", without implying endorsement by the Qwen team.

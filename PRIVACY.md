@@ -1,6 +1,6 @@
 # Privacy (template for hosted instances)
 
-If you host FlowLens publicly, publish a privacy note like this one and adjust
+If you host CodeNaksha publicly, publish a privacy note like this one and adjust
 it to match your setup.
 
 - **What we receive:** the zip you upload, or the text you type in prompt mode.

@@ -84,7 +84,7 @@ def extract(record: dict, prompt_field: str | None, workflow_field: str | None) 
 
 
 # --------------------------------------------------------------------------- #
-# n8n -> FlowLens graph
+# n8n -> CodeNaksha graph
 # --------------------------------------------------------------------------- #
 
 def _short_type(node_type: str) -> str:

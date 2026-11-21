@@ -49,7 +49,7 @@ async def lifespan(app: FastAPI):
     app.state.jobs.shutdown()
 
 
-app = FastAPI(title="FlowLens", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="CodeNaksha", version="0.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=get_settings().cors_origins,

@@ -1,6 +1,6 @@
 # Security policy
 
-FlowLens processes untrusted uploads, so security reports are very welcome.
+CodeNaksha processes untrusted uploads, so security reports are very welcome.
 
 ## Reporting
 

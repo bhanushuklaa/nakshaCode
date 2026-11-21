@@ -1,4 +1,4 @@
-# FlowLens
+# CodeNaksha
 
 **Understand any codebase as a workflow.** Pick one of three modes at the top of the screen:
 
@@ -15,7 +15,7 @@ For a project zip you get:
 - **File graph**: every file and what it imports. Click a file to see its role, functions and connections.
 - **Map**: a bird's-eye treemap of the whole repository, with folders as regions and files sized by lines of code.
 
-Everything runs on your own machine with an open model (**Qwen3-Coder-30B-A3B**, Apache 2.0) served by **llama.cpp**. It works on an NVIDIA GPU with as little as 8–12 GB of VRAM, or on the CPU alone. FlowLens itself is Apache 2.0.
+Everything runs on your own machine with an open model (**Qwen3-Coder-30B-A3B**, Apache 2.0) served by **llama.cpp**. It works on an NVIDIA GPU with as little as 8–12 GB of VRAM, or on the CPU alone. CodeNaksha itself is Apache 2.0.
 
 ![Project overview](docs/screenshot-workflow.png)
 
@@ -55,11 +55,11 @@ Most of the work is plain, deterministic code. The AI model only adds explanatio
 
 **Getting "deep thinking" from a model without a thinking mode:** every response schema starts with an `analysis` field, so the model reasons first and answers second. Graph problems are found by a validator in plain code (`backend/app/llm/validate.py`), and only those errors go back to the model.
 
-**Without a model**, FlowLens still works: workflows use names taken from the code (`lookup_order` becomes "Lookup order").
+**Without a model**, CodeNaksha still works: workflows use names taken from the code (`lookup_order` becomes "Lookup order").
 
 ### What a workflow shows
 
-FlowLens reads each function's **control flow**, not just its calls:
+CodeNaksha reads each function's **control flow**, not just its calls:
 
 | In the code | In the workflow |
 |---|---|
@@ -107,8 +107,8 @@ The default model file (`Q4_K_M` GGUF) is about **18.6 GB** on disk.
 ## Quick start (Docker)
 
 ```bash
-git clone https://github.com/<you>/flowlens.git
-cd flowlens
+git clone https://github.com/<you>/CodeNaksha.git
+cd CodeNaksha
 cp .env.example .env          # then set LLM_API_KEY to a long random string
                               # (the release zip already contains a ready .env)
 ```
@@ -200,7 +200,7 @@ docker compose --profile gpu up -d llm-gpu
 ```env
 LLM_ENABLED=true
 LLM_BASE_URL=http://localhost:8081/v1
-LLM_MODEL=flowlens-llm
+LLM_MODEL=CodeNaksha-llm
 LLM_API_KEY=<same value as LLM_API_KEY in the root .env>
 LLM_TIMEOUT_S=300
 LLM_CONCURRENCY=2
@@ -321,7 +321,7 @@ All settings are environment variables (see `.env.example`).
 |---|---|---|
 | `LLM_ENABLED` | `true` | Turn AI enrichment on or off |
 | `LLM_BASE_URL` | `http://localhost:8001/v1` | Any OpenAI-compatible server. Docker: `http://llm-gpu:8080/v1` / `http://llm-cpu:8080/v1`. Local dev: `http://localhost:8081/v1` |
-| `LLM_MODEL` | `flowlens-llm` | Model name sent to the server |
+| `LLM_MODEL` | `CodeNaksha-llm` | Model name sent to the server |
 | `LLM_API_KEY` | `not-needed` | Shared secret between the backend and llama.cpp |
 | `LLM_TIMEOUT_S` | `180` | Use `300` or more with CPU offload |
 | `LLM_TEMPERATURE` | `0.3` | Low values give steadier JSON |
@@ -396,8 +396,8 @@ frontend/src/
 
 ## Training your own model
 
-`training/` turns n8n and Mermaid datasets plus your own reviewed FlowLens
-runs into training data in FlowLens's schema. It fine-tunes a small model
+`training/` turns n8n and Mermaid datasets plus your own reviewed CodeNaksha
+runs into training data in CodeNaksha's schema. It fine-tunes a small model
 (Qwen3-4B, Apache 2.0) on a 12 GB GPU and measures the result before and
 after. See [training/README.md](training/README.md).
 
@@ -408,10 +408,10 @@ after. See [training/README.md](training/README.md).
 - [ ] Valkey + RQ job queue for multi-server deployments
 - [ ] Export to n8n workflow JSON and Mermaid
 - [ ] Detail levels and double-click drill-down into a step
-- [ ] Release a fine-tuned FlowLens-4B model on Hugging Face
+- [ ] Release a fine-tuned CodeNaksha-4B model on Hugging Face
 
 ## License
 
-FlowLens is licensed under the [Apache License 2.0](LICENSE).
+CodeNaksha is licensed under the [Apache License 2.0](LICENSE).
 
 The AI model is **not** bundled. llama.cpp (MIT) downloads it from Hugging Face under its own license; Qwen3-Coder-30B-A3B-Instruct is Apache 2.0. See [NOTICE](NOTICE) and [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).

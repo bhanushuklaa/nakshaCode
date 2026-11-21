@@ -1,4 +1,4 @@
-"""Turn FlowLens training logs (TRAINING_LOG=true) into chat training examples.
+"""Turn CodeNaksha training logs (TRAINING_LOG=true) into chat training examples.
 
 With TRAINING_LOG=true the backend writes every model request + answer to
 DATA_DIR/training/YYYY-MM-DD.jsonl. Review those answers (fix bad labels

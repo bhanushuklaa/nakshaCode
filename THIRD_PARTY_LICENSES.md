@@ -1,6 +1,6 @@
 # Third-party licenses
 
-FlowLens is Apache-2.0. Every dependency uses a permissive license that's
+CodeNaksha is Apache-2.0. Every dependency uses a permissive license that's
 compatible with it. CI fails if a GPL, AGPL, SSPL, EPL, Elastic or BUSL
 dependency is added (see `.github/workflows/ci.yml`).
 
